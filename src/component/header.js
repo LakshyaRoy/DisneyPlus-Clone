@@ -7,6 +7,17 @@ import Series from "../images/images/series-icon.svg";
 import Search from "../images/images/search-icon.svg";
 import Originals from "../images/images/original-icon.svg";
 import Movies from "../images/images/movie-icon.svg";
+import { auth } from "../FireBase/Firebase";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import {
+  selectUserEmail,
+  selectUserName,
+  selectUserPhoto,
+  setUserLoginDetails,
+} from "../feature/user/userSlice";
 
 const Nav = styled.nav`
   position: fixed;
@@ -118,40 +129,82 @@ const Login = styled.a`
     border-color: transparent;
   }
 `;
+const UserImg = styled.img`
+  height: 40px; /* Adjust the height to your desired value */
+  width: 40px;
+  border-radius: 50%;
+`;
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const history = useNavigate();
+  const userName = useSelector(selectUserName);
+  const userPhoto = useSelector(selectUserPhoto);
+  console.log("User photo from Redux store:", userPhoto);
+
+  const handleLogin = async () => {
+    try {
+      const loginData = await signInWithPopup(auth, new GoogleAuthProvider());
+      setUser(loginData.user);
+      console.log("User photoURL:", loginData.user.photoURL);
+      console.log(loginData.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setUser = (user) => {
+    dispatch(
+      setUserLoginDetails({
+        name: user.displayName,
+        email: user.email,
+        photoUrl: user.photoURL,
+      })
+    );
+  };
+  console.log(userPhoto);
+  console.log(userName);
+
   return (
     <Nav>
       <Logo>
         <img src={Disney} alt="Disney" />
       </Logo>
-      <NavMenu>
-        <a href="/home">
-          <img src={Home} alt="Home" />
-          <span>Home</span>
-        </a>
-        <a href="/Search">
-          <img src={Search} alt="Search" />
-          <span>Search</span>
-        </a>
-        <a href="/WatchList">
-          <img src={WatchList} alt="WatchList" />
-          <span>WatchList</span>
-        </a>
-        <a href="/Originals">
-          <img src={Originals} alt="Originals" />
-          <span>Originals</span>
-        </a>
-        <a href="/Movies">
-          <img src={Movies} alt="Movies" />
-          <span>Movies</span>
-        </a>
-        <a href="/Series">
-          <img src={Series} alt="Series" />
-          <span>Series</span>
-        </a>
-      </NavMenu>
-      <Login>Login</Login>
+
+      {!userName ? (
+        <Login onClick={handleLogin}>Login</Login>
+      ) : (
+        <>
+          <NavMenu>
+            <a href="/home">
+              <img src={Home} alt="Home" />
+              <span>Home</span>
+            </a>
+            <a href="/Search">
+              <img src={Search} alt="Search" />
+              <span>Search</span>
+            </a>
+            <a href="/WatchList">
+              <img src={WatchList} alt="WatchList" />
+              <span>WatchList</span>
+            </a>
+            <a href="/Originals">
+              <img src={Originals} alt="Originals" />
+              <span>Originals</span>
+            </a>
+            <a href="/Movies">
+              <img src={Movies} alt="Movies" />
+              <span>Movies</span>
+            </a>
+            <a href="/Series">
+              <img src={Series} alt="Series" />
+              <span>Series</span>
+            </a>
+          </NavMenu>
+
+          <UserImg src={userPhoto} alt={userName} />
+        </>
+      )}
     </Nav>
   );
 };
