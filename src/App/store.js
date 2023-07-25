@@ -1,12 +1,13 @@
 // store.js
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import userReducer from "../feature/user/userSlice"; // Correct the import here
+import { configureStore } from "@reduxjs/toolkit";
+import userSlice from "../feature/user/userSlice"; // Correct the import here
 
 export default configureStore({
   reducer: {
-    user: userReducer,
+    userSlice,
   },
-  middleware: getDefaultMiddleware({
-    serializableCheck: false, // to ignore redux-persist warning.
-  }),
+
+  // middleware: getDefaultMiddleware({
+  //   serializableCheck: false, // to ignore redux-persist warning.
+  // }),
 });

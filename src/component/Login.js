@@ -3,6 +3,7 @@ import styled from "styled-components";
 import BgImage from "../images/images/login-background.jpg";
 import ctaLogoOne from "../images/images/cta-logo-one.svg";
 import ctaLogoTwo from "../images/images/cta-logo-two.png";
+import Header from "./header";
 
 const BgImages = styled.div`
   background-image: url(${BgImage});

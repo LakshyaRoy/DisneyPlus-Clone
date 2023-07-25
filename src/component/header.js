@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Disney from "../images/images/logo.svg";
 import Home from "../images/images/home-icon.svg";
@@ -10,12 +10,10 @@ import Movies from "../images/images/movie-icon.svg";
 import { auth } from "../FireBase/Firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
-  selectUserEmail,
-  selectUserName,
-  selectUserPhoto,
+  setSignOutState,
   setUserLoginDetails,
 } from "../feature/user/userSlice";
 
@@ -33,7 +31,7 @@ const Nav = styled.nav`
   letter-spacing: 16px;
   z-index: 3;
 `;
-const Logo = styled.a`
+const Logo = styled.div`
   padding: 0;
   width: 80px;
   margin-top: 4px;
@@ -130,79 +128,160 @@ const Login = styled.a`
   }
 `;
 const UserImg = styled.img`
-  height: 40px; /* Adjust the height to your desired value */
-  width: 40px;
+  height: auto; /* Adjust the height to your desired value */
+  width: auto;
   border-radius: 50%;
+`;
+const DropDown = styled.div`
+  position: absolute;
+  top: 48px;
+  right: 0px;
+  background: rgb(19, 19, 19);
+  border: 1px solid rgba(151, 151, 151, 0.3);
+  border-radius: 4px;
+  box-shadow: rgb(0 0 0 /50%) 0px 0px 18px 0px;
+  padding: 10px;
+  font-size: 12px;
+  letter-spacing: 3px;
+  width: 95px;
+  opacity: 0;
+`;
+
+const SignOut = styled.div`
+  position: relative;
+  height: 48px;
+  width: 48px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+
+  ${UserImg} {
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover {
+    ${DropDown} {
+      opacity: 1;
+
+      transition-duration: 1s;
+    }
+  }
 `;
 
 const Header = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
-  const userName = useSelector(selectUserName);
-  const userPhoto = useSelector(selectUserPhoto);
-  console.log("User photo from Redux store:", userPhoto);
+
+  const userData = useSelector((state) => state.userSlice.user);
+  // console.log(userData);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      // console.log(user);
+      if (user) {
+        dispatch(
+          setUserLoginDetails({
+            name: user.displayName,
+            email: user.email,
+            photoUrl: user.photoURL,
+          })
+        );
+        history("/  ");
+      }
+    });
+  }, [userData?.name]);
 
   const handleLogin = async () => {
-    try {
-      const loginData = await signInWithPopup(auth, new GoogleAuthProvider());
-      setUser(loginData.user);
-      console.log("User photoURL:", loginData.user.photoURL);
-      console.log(loginData.user);
-    } catch (error) {
-      console.log(error);
+    if (!userData?.name) {
+      try {
+        const loginData = await signInWithPopup(auth, new GoogleAuthProvider());
+        dispatch(
+          setUserLoginDetails({
+            name: loginData.displayName,
+            email: loginData.email,
+            photoUrl: loginData.photoURL,
+          })
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (userData) {
+      auth.signOut();
+      try {
+        dispatch(setSignOutState());
+        history("/");
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
-  const setUser = (user) => {
-    dispatch(
-      setUserLoginDetails({
-        name: user.displayName,
-        email: user.email,
-        photoUrl: user.photoURL,
-      })
-    );
-  };
-  console.log(userPhoto);
-  console.log(userName);
+  // const setUser = (user) => {
+  //   dispatch(
+  //     setUserLoginDetails({
+  //       name: user.displayName,
+  //       email: user.email,
+  //       photoUrl: user.photoURL,
+  //     })
+  //   );
+  // };
+  // console.log(userPhoto);
+  // console.log(userData);
 
   return (
     <Nav>
-      <Logo>
-        <img src={Disney} alt="Disney" />
-      </Logo>
+      {!userData?.name ? (
+        <Link to="/">
+          <Logo>
+            <img src={Disney} alt="Disney" />
+          </Logo>
+        </Link>
+      ) : (
+        <Link to="/home">
+          <Logo>
+            <img src={Disney} alt="Disney" />
+          </Logo>
+        </Link>
+      )}
 
-      {!userName ? (
+      {!userData?.name ? (
         <Login onClick={handleLogin}>Login</Login>
       ) : (
         <>
           <NavMenu>
-            <a href="/home">
+            <Link to="/home">
               <img src={Home} alt="Home" />
               <span>Home</span>
-            </a>
-            <a href="/Search">
+            </Link>
+            <Link to="/Search">
               <img src={Search} alt="Search" />
               <span>Search</span>
-            </a>
-            <a href="/WatchList">
+            </Link>
+            <Link to="/WatchList">
               <img src={WatchList} alt="WatchList" />
               <span>WatchList</span>
-            </a>
-            <a href="/Originals">
+            </Link>
+            <Link to="/Originals">
               <img src={Originals} alt="Originals" />
               <span>Originals</span>
-            </a>
-            <a href="/Movies">
+            </Link>
+            <Link to="/Movies">
               <img src={Movies} alt="Movies" />
               <span>Movies</span>
-            </a>
-            <a href="/Series">
+            </Link>
+            <Link to="/Series">
               <img src={Series} alt="Series" />
               <span>Series</span>
-            </a>
+            </Link>
           </NavMenu>
-
-          <UserImg src={userPhoto} alt={userName} />
+          <SignOut>
+            <UserImg src={userData?.photoUrl} alt={userData?.name} />
+            <DropDown>
+              <span onClick={handleLogin}>Sign Out</span>
+            </DropDown>
+          </SignOut>
         </>
       )}
     </Nav>
