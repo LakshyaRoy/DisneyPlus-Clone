@@ -188,7 +188,7 @@ const Header = () => {
             photoUrl: user.photoURL,
           })
         );
-        history("/  ");
+        history("/");
       }
     });
   }, [userData?.name]);
@@ -277,7 +277,7 @@ const Header = () => {
             </Link>
           </NavMenu>
           <SignOut>
-            <UserImg src={userData?.photoUrl} alt={userData?.name} />
+            <UserImg src={`${userData?.photoUrl}`} alt={userData?.name} />
             <DropDown>
               <span onClick={handleLogin}>Sign Out</span>
             </DropDown>
