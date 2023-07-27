@@ -73,31 +73,31 @@ const Viewers = () => {
     <Container>
       <Wrap>
         <img src={Disney} alt="" />
-        <video autoPlay loop={true} playsInline={true}>
+        <video autoPlay loop={true} muted playsInline={true}>
           <source src={DisneyVideo} type="video/mp4" />
         </video>
       </Wrap>
       <Wrap>
         <img src={Pixar} alt="" />
-        <video autoPlay loop={true} playsInline={true}>
+        <video autoPlay loop={true} muted playsInline={true}>
           <source src={PixarVideo} type="video/mp4" />
         </video>
       </Wrap>
       <Wrap>
         <img src={Marvel} alt="" />
-        <video autoPlay loop={true} playsInline={true}>
+        <video autoPlay loop={true} muted playsInline={true}>
           <source src={MarvelVideo} type="video/mp4" />
         </video>
       </Wrap>
       <Wrap>
         <img src={StarWar} alt="" />
-        <video autoPlay loop={true} playsInline={true}>
+        <video autoPlay loop={true} muted playsInline={true}>
           <source src={StarWarVideo} type="video/mp4" />
         </video>
       </Wrap>
       <Wrap>
         <img src={National} alt="" />
-        <video autoPlay loop={true} playsInline={true}>
+        <video autoPlay loop={true} muted playsInline={true}>
           <source src={NationalVideo} type="video/mp4" />
         </video>
       </Wrap>
