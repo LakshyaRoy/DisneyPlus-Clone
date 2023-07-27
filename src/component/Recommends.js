@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
-const Recommends = () => {
+const Recommends = ({ data }) => {
   const Container = styled.div`
     padding: 0 0 26px;
   `;
@@ -50,16 +50,20 @@ const Recommends = () => {
       border-color: rgba(249, 249, 249, 0.8);
     }
   `;
-
+  // console.log(data);
   return (
     <Container>
       <h4>Recommended For You</h4>
       <Content>
-        <Wrap>
-          <Link to={"/"}>
-            <img src="" alt="" />
-          </Link>
-        </Wrap>
+        {data.map((movies, id) => {
+          return (
+            <Wrap key={id}>
+              <Link to={`/detail/${movies.id}`}>
+                <img src={movies.cardImg} alt={movies.title} />
+              </Link>
+            </Wrap>
+          );
+        })}
       </Content>
     </Container>
   );

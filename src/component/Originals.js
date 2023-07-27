@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
-const Originals = () => {
+const Originals = ({ data }) => {
   const Container = styled.div`
     padding: 0 0 26px;
   `;
@@ -55,11 +55,15 @@ const Originals = () => {
     <Container>
       <h4>Disney Originals</h4>
       <Content>
-        <Wrap>
-          <Link to={"/"}>
-            <img src="" alt="" />
-          </Link>
-        </Wrap>
+        {data.map((movies, id) => {
+          return (
+            <Wrap key={id}>
+              <Link to={`/movie/${movies.id}`}>
+                <img src={movies.cardImg} alt={movies.title} />
+              </Link>
+            </Wrap>
+          );
+        })}
       </Content>
     </Container>
   );
