@@ -181,6 +181,7 @@ const Header = () => {
     auth.onAuthStateChanged(async (user) => {
       // console.log(user);
       if (user) {
+        // console.log(user);
         dispatch(
           setUserLoginDetails({
             name: user.displayName,
@@ -188,7 +189,8 @@ const Header = () => {
             photoUrl: user.photoURL,
           })
         );
-        history("/");
+        localStorage.setItem("localId", user?.uid);
+        history("/home");
       }
     });
   }, [userData?.name]);
@@ -197,6 +199,7 @@ const Header = () => {
     if (!userData?.name) {
       try {
         const loginData = await signInWithPopup(auth, new GoogleAuthProvider());
+        // console.log(loginData);
         dispatch(
           setUserLoginDetails({
             name: loginData.displayName,
@@ -207,11 +210,12 @@ const Header = () => {
       } catch (error) {
         console.log(error);
       }
-    } else if (userData) {
-      auth.signOut();
+    } else {
       try {
         dispatch(setSignOutState());
+        auth.signOut();
         history("/");
+        localStorage.removeItem("localId");
       } catch (error) {
         console.log(error);
       }
