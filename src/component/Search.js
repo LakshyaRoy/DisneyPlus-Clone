@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styled-components";
 import { SearchOutlined } from "@ant-design/icons";
+import { useGetPopularMoviesQuery } from "../feature/movie/tmdbApi";
 
 const Container = styled.div`
   position: relative;
@@ -49,6 +50,8 @@ const Icon = styled.div`
 `;
 
 const Search = () => {
+  const { data } = useGetPopularMoviesQuery();
+  // console.log(data);
   return (
     <Container>
       <SearchBar>
