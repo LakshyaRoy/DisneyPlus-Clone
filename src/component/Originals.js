@@ -57,7 +57,7 @@ const Originals = ({ data }) => {
         {data.map((movies, id) => {
           return (
             <Wrap key={id}>
-              <Link to={`/detail/${movies.id}`}>
+              <Link to={`/detail/${movies.title.replaceAll(" ", "-")}`}>
                 <img src={movies.cardImg} alt={movies.title} />
               </Link>
             </Wrap>

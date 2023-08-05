@@ -5,7 +5,14 @@ import PlayIconBlack from "../images/images/play-icon-black.png";
 import GroupIcon from "../images/images/group-icon.png";
 import { useParams } from "react-router-dom";
 import db from "../FireBase/Firebase";
-import { collection, doc, getDoc, onSnapshot, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 
 const Container = styled.div`
   position: relative;
@@ -189,42 +196,31 @@ const Description = styled.div`
   }
 `;
 const Details = () => {
-  const { id } = useParams();
+  const { title } = useParams();
+  const newTitle = title.replaceAll("-", " ");
+  // console.log("detail", newTitle);
   const [detailData, setDetailData] = useState({});
 
   useEffect(() => {
-    const q = query(collection(db, "movies"));
+    const q = query(collection(db, "movies"), where("title", "==", newTitle));
 
-    const unsub = onSnapshot(q, (QuerySnapshot) => {
+    onSnapshot(q, (QuerySnapshot) => {
       QuerySnapshot.forEach((doc) => {
         const movieData = doc.data();
-        if (`${movieData?.id}` === `${id}`) {
-          setDetailData({
-            id: doc.id,
-            ...movieData,
-          });
-          // console.log(`Movie Data Fetched }`, movieData);
-        } else {
-          // console.log("No Movie Found");
-        }
+        // console.log(movieData);
+        setDetailData(movieData);
       });
-
-      setDetailData(); // Update the state with the fetched data
     });
-
-    return () => unsub(); // Detach the snapshot listener on unmount
   }, []);
 
+  // console.log(detailData);
   return (
     <Container>
       <BackGround>
-        <img src={""} alt={""} />
+        <img src={detailData.backgroundImg} alt={detailData.title} />
       </BackGround>
       <ImageTitle>
-        <img
-          src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D7AEE1F05D10FC37C873176AAA26F777FC1B71E7A6563F36C6B1B497CAB1CEC2/scale?width=1440&aspectRatio=1.78"
-          alt=""
-        />
+        <img src={detailData.titleImg} alt={detailData.title} />
       </ImageTitle>
       <ContentMeta>
         <Controls>
@@ -246,8 +242,8 @@ const Details = () => {
             </div>
           </GroupWatch>
         </Controls>
-        <InfoWrapper>sub Title</InfoWrapper>
-        <Description>Lorem, ipsum.</Description>
+        <InfoWrapper>{detailData.subTitle}</InfoWrapper>
+        <Description>{detailData.description}</Description>
       </ContentMeta>
     </Container>
   );
