@@ -13,6 +13,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { useGetMoviesDetailsQuery } from "../feature/movie/tmdbApi";
 
 const Container = styled.div`
   position: relative;
@@ -195,9 +196,27 @@ const Description = styled.div`
     font-size: 14px;
   }
 `;
+
+const PosterImage = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  -webkit-box-pack: start;
+  margin: 0px auto;
+  height: 40vw;
+  min-height: 170px;
+  padding-bottom: 24px;
+  width: 100%;
+  img {
+    max-width: 600px;
+    min-width: 200px;
+    object-fit: contain;
+  }
+`;
 const Details = () => {
-  const { title } = useParams();
-  const newTitle = title.replaceAll("-", " ");
+  const { id } = useParams();
+  const newTitle = isNaN(id) ? id.replaceAll("-", " ") : id;
+  // console.log(newTitle);
   // console.log("detail", newTitle);
   const [detailData, setDetailData] = useState({});
 
@@ -213,39 +232,84 @@ const Details = () => {
     });
   }, []);
 
-  // console.log(detailData);
+  const { data, isFetching } = useGetMoviesDetailsQuery(id);
+  console.log(data);
   return (
-    <Container>
-      <BackGround>
-        <img src={detailData.backgroundImg} alt={detailData.title} />
-      </BackGround>
-      <ImageTitle>
-        <img src={detailData.titleImg} alt={detailData.title} />
-      </ImageTitle>
-      <ContentMeta>
-        <Controls>
-          <Player>
-            <img src={PlayIconBlack} alt="" />
-            <span>Play</span>
-          </Player>
-          <Trailer>
-            <img src={PlayIconWhite} alt="" />
-            <span>trailer</span>
-          </Trailer>
-          <AddList>
-            <span></span>
-            <span></span>
-          </AddList>
-          <GroupWatch>
-            <div>
-              <img src={GroupIcon} alt="" />
-            </div>
-          </GroupWatch>
-        </Controls>
-        <InfoWrapper>{detailData.subTitle}</InfoWrapper>
-        <Description>{detailData.description}</Description>
-      </ContentMeta>
-    </Container>
+    <>
+      {isNaN(id) ? (
+        <Container>
+          <div>
+            <BackGround>
+              <img src={detailData.backgroundImg} alt={detailData.title} />
+            </BackGround>
+            <ImageTitle>
+              <img src={detailData.titleImg} alt={detailData.title} />
+            </ImageTitle>
+            <ContentMeta>
+              <Controls>
+                <Player>
+                  <img src={PlayIconBlack} alt="" />
+                  <span>Play</span>
+                </Player>
+                <Trailer>
+                  <img src={PlayIconWhite} alt="" />
+                  <span>trailer</span>
+                </Trailer>
+                <AddList>
+                  <span></span>
+                  <span></span>
+                </AddList>
+                <GroupWatch>
+                  <div>
+                    <img src={GroupIcon} alt="" />
+                  </div>
+                </GroupWatch>
+              </Controls>
+              <InfoWrapper>{detailData.subTitle}</InfoWrapper>
+              <Description>{detailData.description}</Description>
+            </ContentMeta>
+          </div>
+        </Container>
+      ) : (
+        <Container>
+          <BackGround>
+            <img
+              src={`https://image.tmdb.org/t/p/original${data?.poster_path}`}
+              alt={data?.title}
+            />
+          </BackGround>
+          <PosterImage>
+            <img
+              src={`https://image.tmdb.org/t/p/w500${data?.poster_path}`}
+              alt={data?.title}
+            />
+          </PosterImage>
+          <ContentMeta>
+            <Controls>
+              <Player>
+                <img src={PlayIconBlack} alt="" />
+                <span>Play</span>
+              </Player>
+              <Trailer>
+                <img src={PlayIconWhite} alt="" />
+                <span>trailer</span>
+              </Trailer>
+              <AddList>
+                <span></span>
+                <span></span>
+              </AddList>
+              <GroupWatch>
+                <div>
+                  <img src={GroupIcon} alt="" />
+                </div>
+              </GroupWatch>
+            </Controls>
+            <InfoWrapper>{detailData.subTitle}</InfoWrapper>
+            <Description>{detailData.description}</Description>
+          </ContentMeta>
+        </Container>
+      )}
+    </>
   );
 };
 

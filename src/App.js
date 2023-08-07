@@ -39,7 +39,8 @@ function App() {
           }
         />
 
-        <Route path="/detail/:title" element={<Details />} />
+        <Route path="/detail/:id" element={<Details />} />
+
         <Route path="/search" element={<Search />} />
       </Routes>
     </BrowserRouter>
