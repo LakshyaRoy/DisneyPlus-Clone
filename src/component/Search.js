@@ -117,11 +117,11 @@ const Search = () => {
         {!searchValue.length
           ? data?.results?.map((movies) => {
               return (
-                <CardWrapper key={movies.id}>
-                  <Link to={`/detail/${movies.id}`}>
+                <CardWrapper key={movies?.id}>
+                  <Link to={`/detail/${movies?.id}`}>
                     <img
-                      src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`}
-                      alt={movies.title}
+                      src={`https://image.tmdb.org/t/p/w500/${movies?.poster_path}`}
+                      alt={movies?.title}
                       height="250px"
                       width="100%"
                     />
@@ -133,15 +133,15 @@ const Search = () => {
               return (
                 <CardWrapper key={movies.id}>
                   <Link
-                    to={`/detail/${movies.id}`}
+                    to={`/detail/${movies?.id}`}
                     style={{
                       height: "100%",
                     }}
                   >
                     {movies.poster_path ? (
                       <img
-                        src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`}
-                        alt={movies.title}
+                        src={`https://image.tmdb.org/t/p/w500/${movies?.poster_path}`}
+                        alt={movies?.title}
                         height="250px"
                         width="100%"
                       />

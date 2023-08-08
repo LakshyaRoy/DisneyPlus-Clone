@@ -31,6 +31,14 @@ export const tmdbMoviesApi = createApi({
         },
       }),
     }),
+    getMoviesVideo: builder.query({
+      query: (id) => ({
+        url: `movie/${id}/videos?`,
+        params: {
+          api_key: process.env.REACT_APP_TMDBAPIKEY,
+        },
+      }),
+    }),
   }),
 });
 
@@ -38,4 +46,5 @@ export const {
   useGetPopularMoviesQuery,
   useGetSearchQuery,
   useGetMoviesDetailsQuery,
+  useGetMoviesVideoQuery,
 } = tmdbMoviesApi;
