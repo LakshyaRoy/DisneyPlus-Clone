@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import PlayIconWhite from "../images/images/play-icon-white.png";
 import PlayIconBlack from "../images/images/play-icon-black.png";
 import GroupIcon from "../images/images/group-icon.png";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import db from "../FireBase/Firebase";
 import millify from "millify";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
@@ -65,7 +65,7 @@ const Controls = styled.div`
   align-items: center;
   display: flex;
   flex-flow: row nowrap;
-  margin: 24px 0px;
+  margin: 12px 0px;
   min-height: 56px;
 `;
 
@@ -210,7 +210,8 @@ const PosterImage = styled.div`
     max-width: 600px;
     min-width: 200px;
     object-fit: contain;
-    height: 600px;
+    height: 550px;
+    margin-top: 10px;
   }
 `;
 const Title = styled.p`
