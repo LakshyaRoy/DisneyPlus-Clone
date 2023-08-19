@@ -36,7 +36,7 @@ const BackGround = styled.div`
     object-fit: cover;
 
     @media screen and (max-width: 768px) {
-      width: initial;
+      width: 100%;
     }
   }
 `;
