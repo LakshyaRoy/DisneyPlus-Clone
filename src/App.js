@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import Details from "./component/Details";
 import { useSelector } from "react-redux";
 import Search from "./component/Search";
+import WatchList from "./component/WatchList";
 function App() {
   const userData = useSelector((state) => state.userSlice.user);
 
@@ -42,6 +43,8 @@ function App() {
         <Route path="/detail/:id" element={<Details />} />
 
         <Route path="/search" element={<Search />} />
+
+        <Route path="/watchlist" element={<WatchList />} />
       </Routes>
     </BrowserRouter>
   );
