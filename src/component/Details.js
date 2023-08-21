@@ -4,7 +4,7 @@ import PlayIconWhite from "../images/images/play-icon-white.png";
 import PlayIconBlack from "../images/images/play-icon-black.png";
 import GroupIcon from "../images/images/group-icon.png";
 import { useParams } from "react-router-dom";
-import db from "../FireBase/Firebase";
+import db, { auth } from "../FireBase/Firebase";
 import millify from "millify";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import {
@@ -12,6 +12,7 @@ import {
   useGetMoviesVideoQuery,
 } from "../feature/movie/tmdbApi";
 import Trailers from "./Trailer";
+import { doc, setDoc } from "firebase/firestore";
 
 const Container = styled.div`
   position: relative;
@@ -115,7 +116,7 @@ const Trailer = styled(Player)`
   margin-left: 16px;
   cursor: pointer;
 `;
-const AddList = styled.div`
+const AddList = styled.button`
   margin-right: 16px;
   display: flex;
   align-items: center;
@@ -329,6 +330,24 @@ const Details = () => {
   const movieVideo = useGetMoviesVideoQuery(id);
   const { data, isFetching } = useGetMoviesDetailsQuery(id);
 
+  const handleAddToWishList = async () => {
+    try {
+      const wishlist = await setDoc(doc(db, "wishlist", id), {
+        uid: auth?.currentUser?.uid,
+        email: auth?.currentUser?.email,
+        displayName: auth?.currentUser?.displayName,
+        id: parseInt(id),
+        title: data?.title,
+        poster_path: data?.poster_path,
+      });
+      console.log(wishlist);
+    } catch (error) {
+      console.log("error in pushing to wishlist", error);
+    }
+
+    console.log(id);
+  };
+
   const [isTrailer, setIsTrailer] = useState(false);
 
   return (
@@ -405,7 +424,7 @@ const Details = () => {
                 <span>trailer</span>
               </Trailer>
 
-              <AddList>
+              <AddList onClick={handleAddToWishList}>
                 <span></span>
                 <span></span>
               </AddList>
@@ -424,8 +443,9 @@ const Details = () => {
               </Genres>
               <Budget>
                 {" "}
-                Budget :{millify(parseInt(data?.budget))} , Revenue :
-                {millify(parseInt(data?.revenue))}{" "}
+                Budget :{data?.budget ? millify(parseInt(data?.budget)) : "N/A"}
+                , Revenue :
+                {data?.revenue ? millify(parseInt(data?.revenue)) : "N/A"}
               </Budget>
               <Release>
                 Release Date :{data?.release_date} , Status :{data?.status}
