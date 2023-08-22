@@ -1,7 +1,6 @@
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, onSnapshot, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import db from "../FireBase/Firebase";
-import { useGetMoviesDetailsQuery } from "../feature/movie/tmdbApi";
+import db, { auth } from "../FireBase/Firebase";
 import MovieCard from "./MoiveCard";
 import { styled } from "styled-components";
 
@@ -39,19 +38,30 @@ const WatchList = () => {
     });
   };
 
-  console.log(watchList);
+  // console.log(watchList);
 
   useEffect(() => {
     getAllWishlist();
   }, []);
 
+  const wishListArray = watchList.map((movies) => movies?.data());
+  const matchUid = wishListArray?.find(
+    (movies) => movies?.uid === auth?.currentUser?.uid
+  );
+  console.log(matchUid);
   return (
     <Container>
       <Card>
         {watchList.map(
-          (movies) => (
-            <MovieCard movies={movies?.data()} />
-          )
+          (movies) => {
+            // console.log(movies?.data()?.uid);
+            return (
+              movies?.data()?.uid === auth?.currentUser?.uid && (
+                <MovieCard key={movies.id} movies={movies.data()} />
+              )
+            );
+          }
+
           // console.log(movie.data())
         )}
       </Card>

@@ -340,12 +340,12 @@ const Details = () => {
         title: data?.title,
         poster_path: data?.poster_path,
       });
-      console.log(wishlist);
+      // console.log(wishlist);
     } catch (error) {
       console.log("error in pushing to wishlist", error);
     }
 
-    console.log(id);
+    // console.log(id);
   };
 
   const [isTrailer, setIsTrailer] = useState(false);
