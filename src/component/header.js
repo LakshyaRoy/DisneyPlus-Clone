@@ -190,7 +190,7 @@ const Header = () => {
           })
         );
         localStorage.setItem("localId", user?.uid);
-        history("/home");
+        // history("/home");
       }
     });
   }, [userData?.name]);
@@ -259,23 +259,23 @@ const Header = () => {
               <img src={Home} alt="Home" />
               <span>Home</span>
             </Link>
-            <Link to="/Search">
+            <Link to="/search">
               <img src={Search} alt="Search" />
               <span>Search</span>
             </Link>
-            <Link to="/WatchList">
+            <Link to="/watchlist">
               <img src={WatchList} alt="WatchList" />
               <span>WatchList</span>
             </Link>
-            <Link to="/Originals">
+            {/* <Link to="/originals">
               <img src={Originals} alt="Originals" />
               <span>Originals</span>
-            </Link>
-            <Link to="/Movies">
+            </Link> */}
+            {/* <Link to="/movies">
               <img src={Movies} alt="Movies" />
               <span>Movies</span>
-            </Link>
-            <Link to="/Series">
+            </Link> */}
+            <Link to="/series">
               <img src={Series} alt="Series" />
               <span>Series</span>
             </Link>
