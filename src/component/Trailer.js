@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { CloseOutlined } from "@ant-design/icons";
 import { useGetSimilarMoviesQuery } from "../feature/movie/tmdbApi";
@@ -94,9 +94,16 @@ const Cards = styled.div`
 `;
 const Trailers = ({ videoData, setIsTrailer, isTrailer }) => {
   const MoiveId = videoData?.id;
-  const videoDetails = videoData?.results?.filter(
-    (video) => video?.site === "YouTube" && video?.type === "Trailer"
-  );
+
+  const [videoDetails, setVideoDetails] = useState([]);
+
+  useEffect(() => {
+    const Details = videoData?.results?.filter(
+      (video) => video?.site === "YouTube" && video?.type === "Trailer"
+    );
+    setVideoDetails(Details);
+    console.log("details", Details);
+  }, [MoiveId]);
 
   const { data, isFetching } = useGetSimilarMoviesQuery(MoiveId);
   console.log(data);
