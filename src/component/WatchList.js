@@ -1,4 +1,4 @@
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import db, { auth } from "../FireBase/Firebase";
 import MovieCard from "./MoiveCard";
@@ -31,8 +31,12 @@ const WatchList = () => {
 
   const [watchList, setWatchList] = useState([]);
 
+  const localUserId = localStorage.getItem("localId");
   const getAllWishlist = () => {
-    const q = query(collection(db, "wishlist"));
+    const q = query(
+      collection(db, "wishlist"),
+      where("uid", "==", localUserId)
+    );
     onSnapshot(q, (QuerySnapshot) => {
       setWatchList(QuerySnapshot.docs);
     });
@@ -44,22 +48,18 @@ const WatchList = () => {
     getAllWishlist();
   }, []);
 
-  const wishListArray = watchList.map((movies) => movies?.data());
-  const matchUid = wishListArray?.find(
-    (movies) => movies?.uid === auth?.currentUser?.uid
-  );
-  console.log(matchUid);
+  // const wishListArray = watchList.map((movies) => movies?.data());
+  // const matchUid = wishListArray?.find(
+  //   (movies) => movies?.uid === auth?.currentUser?.uid
+  // );
+  console.log("auth check", auth?.currentUser?.uid);
   return (
     <Container>
       <Card>
         {watchList.map(
           (movies) => {
             // console.log(movies?.data()?.uid);
-            return (
-              movies?.data()?.uid === auth?.currentUser?.uid && (
-                <MovieCard key={movies.id} movies={movies.data()} />
-              )
-            );
+            return <MovieCard key={movies.id} movies={movies.data()} />;
           }
 
           // console.log(movie.data())
