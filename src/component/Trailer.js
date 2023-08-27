@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { CloseOutlined } from "@ant-design/icons";
-import { useGetSimilarMoviesQuery } from "../feature/movie/tmdbApi";
+import {
+  useGetSimilarMoviesQuery,
+  useGetTvShowSimilarlyQuery,
+} from "../feature/movie/tmdbApi";
+
 import { Link } from "react-router-dom";
 
 const ContainerWrapper = styled.div`
@@ -92,22 +96,37 @@ const Cards = styled.div`
     }
   }
 `;
-const Trailers = ({ videoData, setIsTrailer, isTrailer }) => {
+const Trailers = ({ videoData, setIsTrailer, isTrailer, tvShowTrailer }) => {
+  // console.log(tvShowTrailer);
   const MoiveId = videoData?.id;
+  const TvId = tvShowTrailer?.data?.id;
 
   const [videoDetails, setVideoDetails] = useState([]);
+  const [tvDetails, setTvDetails] = useState([]);
 
   useEffect(() => {
     const Details = videoData?.results?.filter(
       (video) => video?.site === "YouTube" && video?.type === "Trailer"
     );
     setVideoDetails(Details);
-    console.log("details", Details);
+    // console.log("details", Details);
   }, [MoiveId]);
 
-  const { data, isFetching } = useGetSimilarMoviesQuery(MoiveId);
-  console.log(data);
+  useEffect(() => {
+    const Details = tvShowTrailer?.data?.results?.filter(
+      (video) => video?.site === "YouTube" && video?.type === "Trailer"
+    );
+    setTvDetails(Details);
+    // console.log("details", Details);
+  }, [TvId]);
 
+  // console.log(tvDetails);
+  const { data, isFetching } = useGetSimilarMoviesQuery(MoiveId);
+  // console.log(data);
+
+  const tvSimilarData = useGetTvShowSimilarlyQuery(MoiveId);
+
+  console.log("tv:)_-", tvSimilarData);
   // useEffect(() => {
   //   document.body.style.overflow = isTrailer ? "hidden" : "auto";
   // }, [isTrailer]);
@@ -150,41 +169,74 @@ const Trailers = ({ videoData, setIsTrailer, isTrailer }) => {
           />
         </Close>
         <div>
-          <iframe
-            width="765"
-            height="400"
-            src={`https://www.youtube-nocookie.com/embed/${videoDetails?.[0]?.key}`}
-            title="YouTube video player"
-            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture "
-            style={{
-              outline: "none",
-              border: "none",
-              borderRadius: "5px",
-              overflow: "hidden",
-            }}
-          ></iframe>
+          {tvShowTrailer?.status !== "fulfilled" ? (
+            <iframe
+              width="765"
+              height="400"
+              src={`https://www.youtube-nocookie.com/embed/${videoDetails?.[0]?.key}`}
+              title="YouTube video player"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture "
+              style={{
+                outline: "none",
+                border: "none",
+                borderRadius: "5px",
+                overflow: "hidden",
+              }}
+            ></iframe>
+          ) : (
+            <iframe
+              width="765"
+              height="400"
+              src={`https://www.youtube-nocookie.com/embed/${tvDetails?.[0]?.key}`}
+              title="YouTube video player"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture "
+              style={{
+                outline: "none",
+                border: "none",
+                borderRadius: "5px",
+                overflow: "hidden",
+              }}
+            ></iframe>
+          )}
         </div>
         {/* <LinkWrapper> */}
         <MoreMovies>
           <p>More Movies</p>
           <CardWrapper>
             <Cards>
-              {data?.results?.map((movie) => {
-                return (
-                  <Link
-                    to={`/detail/${movie?.id}`}
-                    onClick={() => setIsTrailer(false)}
-                    key={movie?.id}
-                  >
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
-                      alt={movie?.title}
-                      height="225px"
-                      width="150px"
-                    />
-                  </Link>
-                );
-              })}
+              {tvSimilarData?.status !== "fulfilled"
+                ? data?.results?.map((movie) => {
+                    return (
+                      <Link
+                        to={`/detail/${movie?.id}`}
+                        onClick={() => setIsTrailer(false)}
+                        key={movie?.id}
+                      >
+                        <img
+                          src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
+                          alt={movie?.title}
+                          height="225px"
+                          width="150px"
+                        />
+                      </Link>
+                    );
+                  })
+                : tvSimilarData?.data?.results?.map((movie) => {
+                    return (
+                      <Link
+                        to={`/detail/${movie?.id}`}
+                        onClick={() => setIsTrailer(false)}
+                        key={movie?.id}
+                      >
+                        <img
+                          src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
+                          alt={movie?.name}
+                          height="225px"
+                          width="150px"
+                        />
+                      </Link>
+                    );
+                  })}
             </Cards>
           </CardWrapper>
         </MoreMovies>
@@ -199,3 +251,12 @@ const Trailers = ({ videoData, setIsTrailer, isTrailer }) => {
 };
 
 export default Trailers;
+
+// #BUG : id conflict in naruto card  MORE CLEARLY -> THE ID OF THE SERIES AND MOVIE ARE SAME DUE TO WHICH IT IS CREATING THE ENTIRE CONFLICTS :
+// #TODO : MORE MOVIES NOT COMING ON SERIES SECTION ONLY , BUT ITS COMING IN SOME
+
+// #TODO : https://developer.themoviedb.org/reference/tv-series-similar <= WEBSITE IN THIS WHEN I PUT THE ID THEN IT GIVES ME THE DATA BUT IN MY APPLICATION THE STATUS IS REJECTED IN THE SIMILAR MOVIES
+
+// #TODO : SOME YOUTUBE VIDEOS ARE NOT WORKING IN SERIES SECTION PLEASE CHECK THAT ALSO :)
+
+// #TODO IN SOME CASE BOTH SIMILAR SERIES AND YOUTUBE VIDEO IS NOT COMING EX- ANUPAMA
