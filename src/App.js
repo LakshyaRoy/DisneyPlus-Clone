@@ -8,6 +8,8 @@ import Details from "./component/Details";
 import { useSelector } from "react-redux";
 import Search from "./component/Search";
 import WatchList from "./component/WatchList";
+import Series from "./component/Series";
+
 function App() {
   const userData = useSelector((state) => state.userSlice.user);
 
@@ -45,6 +47,8 @@ function App() {
         <Route path="/search" element={<Search />} />
 
         <Route path="/watchlist" element={<WatchList />} />
+
+        <Route path="/series" element={<Series />} />
       </Routes>
     </BrowserRouter>
   );
