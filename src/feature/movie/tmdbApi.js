@@ -47,6 +47,47 @@ export const tmdbMoviesApi = createApi({
         },
       }),
     }),
+    getSearchedTvShow: builder.query({
+      query: (searchItem) => ({
+        url: `search/tv`,
+        params: {
+          query: searchItem,
+          api_key: process.env.REACT_APP_TMDBAPIKEY,
+        },
+      }),
+    }),
+    getTrendingTvShow: builder.query({
+      query: () => ({
+        url: `trending/tv/week?`,
+        params: {
+          api_key: process.env.REACT_APP_TMDBAPIKEY,
+        },
+      }),
+    }),
+    getTvshowDetails: builder.query({
+      query: (id) => ({
+        url: `tv/${id}`,
+        params: {
+          api_key: process.env.REACT_APP_TMDBAPIKEY,
+        },
+      }),
+    }),
+    getTvShowSimilarly: builder.query({
+      query: (id) => ({
+        url: `tv/${id}/similar`,
+        params: {
+          api_key: process.env.REACT_APP_TMDBAPIKEY,
+        },
+      }),
+    }),
+    getTvVideosById: builder.query({
+      query: (id) => ({
+        url: `tv/${id}/videos?`,
+        params: {
+          api_key: process.env.REACT_APP_TMDBAPIKEY,
+        },
+      }),
+    }),
   }),
 });
 
@@ -56,4 +97,9 @@ export const {
   useGetMoviesDetailsQuery,
   useGetMoviesVideoQuery,
   useGetSimilarMoviesQuery,
+  useGetSearchedTvShowQuery,
+  useGetTrendingTvShowQuery,
+  useGetTvshowDetailsQuery,
+  useGetTvShowSimilarlyQuery,
+  useGetTvVideosByIdQuery,
 } = tmdbMoviesApi;
