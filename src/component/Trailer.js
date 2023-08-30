@@ -126,7 +126,7 @@ const Trailers = ({ videoData, setIsTrailer, isTrailer, tvShowTrailer }) => {
 
   const tvSimilarData = useGetTvShowSimilarlyQuery(MoiveId);
 
-  console.log("tv:)_-", tvSimilarData);
+  // console.log("tv:)_-", tvSimilarData);
   // useEffect(() => {
   //   document.body.style.overflow = isTrailer ? "hidden" : "auto";
   // }, [isTrailer]);
