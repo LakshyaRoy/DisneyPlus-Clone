@@ -42,7 +42,7 @@ function App() {
           }
         />
 
-        <Route path="/detail/:id" element={<Details />} />
+        <Route path="/detail/:id/:type?" element={<Details />} />
 
         <Route path="/search" element={<Search />} />
 
