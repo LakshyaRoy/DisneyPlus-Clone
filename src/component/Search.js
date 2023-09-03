@@ -109,7 +109,7 @@ const Search = () => {
           ? data?.results?.map((movies) => {
               return (
                 <CardWrapper key={movies?.id}>
-                  <Link to={`/detail/${movies?.id}`}>
+                  <Link to={`/detail/${movies?.id}/movies`}>
                     <img
                       src={`https://image.tmdb.org/t/p/w500/${movies?.poster_path}`}
                       alt={movies?.title}
@@ -121,7 +121,7 @@ const Search = () => {
               );
             })
           : searchData?.data?.results?.map((movies) => {
-              return <MovieCard movies={movies} />;
+              return <MovieCard movies={movies} type={"movies"} />;
             })}
       </Card>
     </Container>

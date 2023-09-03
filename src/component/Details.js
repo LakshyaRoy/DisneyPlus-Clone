@@ -335,7 +335,8 @@ const Production = styled.div`
 `;
 
 const Details = () => {
-  const { id } = useParams();
+  const { id, type } = useParams();
+  // console.log(type);
   const newTitle = isNaN(id) ? id.replaceAll("-", " ") : id;
   // console.log(newTitle);
   // console.log("detail", newTitle);
@@ -353,12 +354,20 @@ const Details = () => {
     });
   }, []);
 
-  const movieVideo = useGetMoviesVideoQuery(id);
-  const TvVideo = useGetTvVideosByIdQuery(id);
-  const { data, isFetching } = useGetMoviesDetailsQuery(id);
-  const tvData = useGetTvshowDetailsQuery(id);
-  // console.log(TvVideo);
-  // console.log(tvData);
+  const movieVideo = useGetMoviesVideoQuery(id, {
+    skip: type === "tv",
+  });
+  const TvVideo = useGetTvVideosByIdQuery(id, {
+    skip: type === "movies",
+  });
+  const { data, isFetching } = useGetMoviesDetailsQuery(id, {
+    skip: type === "tv",
+  });
+  const tvData = useGetTvshowDetailsQuery(id, {
+    skip: type === "movies",
+  });
+  // console.log("moive data :_", data);
+  // console.log("tv data ->", tvData);
   const success = () => {
     messageApi.open({
       type: "success",
@@ -378,6 +387,7 @@ const Details = () => {
         displayName: auth?.currentUser?.displayName,
         id: parseInt(id),
         title: tvData.status !== "fulfilled" ? data?.title : tvData?.data?.name,
+        type: type,
 
         poster_path:
           tvData.status !== "fulfilled"
@@ -515,7 +525,7 @@ const Details = () => {
                 <Description>{tvData?.data?.overview}</Description>
               </ContentMeta>
               <Trailers
-                videoData={movieVideo?.data}
+                videoData={type === "tv" ? TvVideo?.data : movieVideo?.data}
                 setIsTrailer={setIsTrailer}
                 isTrailer={isTrailer}
                 tvShowTrailer={TvVideo}

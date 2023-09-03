@@ -31,12 +31,16 @@ const Card = styled.div`
   }
 `;
 
-const MovieCard = ({ movies }) => {
-  // console.log(movies.movies);
+const MovieCard = ({ movies, type }) => {
+  console.log("moive card", movies);
   return (
     <Card key={movies.id}>
       <Link
-        to={`/detail/${movies?.id}`}
+        to={
+          type
+            ? `/detail/${movies?.id}/${type}`
+            : `/detail/${movies?.id}/${movies?.type}`
+        }
         style={{
           height: "100%",
         }}

@@ -111,7 +111,7 @@ const Series = () => {
           ? trending?.data?.results?.map((movies) => {
               return (
                 <CardWrapper key={movies?.id}>
-                  <Link to={`/detail/${movies?.id}`}>
+                  <Link to={`/detail/${movies?.id}/tv`}>
                     <img
                       src={`https://image.tmdb.org/t/p/w500/${movies?.poster_path}`}
                       alt={movies?.title}
@@ -123,7 +123,7 @@ const Series = () => {
               );
             })
           : data?.results?.map((movies) => {
-              return <MovieCard movies={movies} />;
+              return <MovieCard movies={movies} type={"tv"} />;
             })}
       </Card>
     </Container>

@@ -98,6 +98,7 @@ const Cards = styled.div`
 `;
 const Trailers = ({ videoData, setIsTrailer, isTrailer, tvShowTrailer }) => {
   // console.log(tvShowTrailer);
+  // console.log(videoData);
   const MoiveId = videoData?.id;
   const TvId = tvShowTrailer?.data?.id;
 
@@ -125,6 +126,7 @@ const Trailers = ({ videoData, setIsTrailer, isTrailer, tvShowTrailer }) => {
   // console.log(data);
 
   const tvSimilarData = useGetTvShowSimilarlyQuery(MoiveId);
+  // console.log(tvSimilarData);
 
   // console.log("tv:)_-", tvSimilarData);
   // useEffect(() => {
@@ -251,12 +253,3 @@ const Trailers = ({ videoData, setIsTrailer, isTrailer, tvShowTrailer }) => {
 };
 
 export default Trailers;
-
-// #BUG : id conflict in naruto card  MORE CLEARLY -> THE ID OF THE SERIES AND MOVIE ARE SAME DUE TO WHICH IT IS CREATING THE ENTIRE CONFLICTS :
-// #TODO : MORE MOVIES NOT COMING ON SERIES SECTION ONLY , BUT ITS COMING IN SOME
-
-// #TODO : https://developer.themoviedb.org/reference/tv-series-similar <= WEBSITE IN THIS WHEN I PUT THE ID THEN IT GIVES ME THE DATA BUT IN MY APPLICATION THE STATUS IS REJECTED IN THE SIMILAR MOVIES
-
-// #TODO : SOME YOUTUBE VIDEOS ARE NOT WORKING IN SERIES SECTION PLEASE CHECK THAT ALSO :)
-
-// #TODO IN SOME CASE BOTH SIMILAR SERIES AND YOUTUBE VIDEO IS NOT COMING EX- ANUPAMA
