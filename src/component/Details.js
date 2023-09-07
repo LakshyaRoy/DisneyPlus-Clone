@@ -402,6 +402,17 @@ const Details = () => {
 
     // console.log(id);
   };
+  const shareData = {
+    title: "Check out this awesome movie",
+    url: document.location.href,
+  };
+  const handleToShare = async () => {
+    try {
+      await navigator.share(shareData);
+    } catch (error) {
+      console.log("Error in share Button", error);
+    }
+  };
 
   const [isTrailer, setIsTrailer] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -428,11 +439,11 @@ const Details = () => {
                   <img src={PlayIconWhite} alt="" />
                   <span>trailer</span>
                 </Trailer>
-                <AddList>
+                <AddList title="Add To WatchList">
                   <span></span>
                   <span></span>
                 </AddList>
-                <GroupWatch>
+                <GroupWatch title="Share" onClick={handleToShare}>
                   <div>
                     <img src={GroupIcon} alt="" />
                   </div>
@@ -483,12 +494,15 @@ const Details = () => {
                     <span>trailer</span>
                   </Trailer>
 
-                  <AddList onClick={handleAddToWishList}>
+                  <AddList
+                    onClick={handleAddToWishList}
+                    title="Add To WatchList"
+                  >
                     <span></span>
                     <span></span>
                   </AddList>
                   <GroupWatch>
-                    <div>
+                    <div title="Share">
                       <img src={GroupIcon} alt="" />
                     </div>
                   </GroupWatch>
@@ -569,11 +583,14 @@ const Details = () => {
                     <span>trailer</span>
                   </Trailer>
 
-                  <AddList onClick={handleAddToWishList}>
+                  <AddList
+                    onClick={handleAddToWishList}
+                    title="Add To WatchList"
+                  >
                     <span></span>
                     <span></span>
                   </AddList>
-                  <GroupWatch>
+                  <GroupWatch title="Share" onClick={handleToShare}>
                     <div>
                       <img src={GroupIcon} alt="" />
                     </div>
