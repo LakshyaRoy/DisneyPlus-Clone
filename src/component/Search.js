@@ -7,6 +7,7 @@ import {
 } from "../feature/movie/tmdbApi";
 import { Link } from "react-router-dom";
 import MovieCard from "./MoiveCard";
+import SearchComponentSkeleton from "./skeletons/searchComponentSkeleton";
 
 const Container = styled.div`
   position: relative;
@@ -85,7 +86,7 @@ const CardWrapper = styled.div`
 
 const Search = () => {
   const [searchValue, setSearchValue] = useState("");
-  const { data } = useGetPopularMoviesQuery();
+  const { data, isFetching } = useGetPopularMoviesQuery();
   const searchData = useGetSearchQuery(searchValue);
   // console.log(data);
   // console.log(searchData);
@@ -103,27 +104,30 @@ const Search = () => {
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </SearchBar>
-      {/* {isFetching && "Loading..."} */}
-      <Card>
-        {!searchValue.length
-          ? data?.results?.map((movies) => {
-              return (
-                <CardWrapper key={movies?.id}>
-                  <Link to={`/detail/${movies?.id}/movies`}>
-                    <img
-                      src={`https://image.tmdb.org/t/p/w500/${movies?.poster_path}`}
-                      alt={movies?.title}
-                      height="250px"
-                      width="100%"
-                    />
-                  </Link>
-                </CardWrapper>
-              );
-            })
-          : searchData?.data?.results?.map((movies) => {
-              return <MovieCard movies={movies} type={"movies"} />;
-            })}
-      </Card>
+      {!isFetching || data ? (
+        <Card>
+          {!searchValue.length
+            ? data?.results?.map((movies) => {
+                return (
+                  <CardWrapper key={movies?.id} title={movies?.title}>
+                    <Link to={`/detail/${movies?.id}/movies`}>
+                      <img
+                        src={`https://image.tmdb.org/t/p/w500/${movies?.poster_path}`}
+                        alt={movies?.title}
+                        height="250px"
+                        width="100%"
+                      />
+                    </Link>
+                  </CardWrapper>
+                );
+              })
+            : searchData?.data?.results?.map((movies) => {
+                return <MovieCard movies={movies} type={"movies"} />;
+              })}
+        </Card>
+      ) : (
+        <SearchComponentSkeleton data={data?.results} />
+      )}
     </Container>
   );
 };

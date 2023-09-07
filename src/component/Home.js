@@ -19,6 +19,7 @@ import {
   onSnapshot,
   query,
 } from "firebase/firestore";
+import RecommendsSkeleton from "./skeletons/recommendsSkeleton";
 
 const Container = styled.main`
   position: relative;
@@ -90,10 +91,17 @@ const Home = () => {
     <Container>
       <ImageSlider />
       <Viewers />
-      <Recommends data={movies.recommends} />
-      <DisneyPlus data={movies.newDisney} />
-      <Originals data={movies.originals} />
-      <Trending data={movies.trending} />
+
+      {movies.length === null ? (
+        <RecommendsSkeleton />
+      ) : (
+        <>
+          <Recommends data={movies.recommends} />
+          <DisneyPlus data={movies.newDisney} />
+          <Originals data={movies.originals} />
+          <Trending data={movies.trending} />
+        </>
+      )}
     </Container>
   );
 };
