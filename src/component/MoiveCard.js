@@ -32,9 +32,9 @@ const Card = styled.div`
 `;
 
 const MovieCard = ({ movies, type }) => {
-  console.log("moive card", movies);
+  // console.log("moive card", movies);
   return (
-    <Card key={movies.id}>
+    <Card key={movies.id} title={movies.title}>
       <Link
         to={
           type
