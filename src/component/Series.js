@@ -129,7 +129,7 @@ const Series = () => {
               })}
         </Card>
       ) : (
-        <SearchComponentSkeleton data={trending?.data?.results} />
+        <SearchComponentSkeleton />
       )}
     </Container>
   );

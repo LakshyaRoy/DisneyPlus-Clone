@@ -88,6 +88,7 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState("");
   const { data, isFetching } = useGetPopularMoviesQuery();
   const searchData = useGetSearchQuery(searchValue);
+
   // console.log(data);
   // console.log(searchData);
   return (
@@ -126,7 +127,7 @@ const Search = () => {
               })}
         </Card>
       ) : (
-        <SearchComponentSkeleton data={data?.results} />
+        <SearchComponentSkeleton />
       )}
     </Container>
   );

@@ -1,8 +1,7 @@
 import React from "react";
-import Skeleton from "react-loading-skeleton";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { styled } from "styled-components";
-import { SkeletonTheme } from "react-loading-skeleton";
 
 const Card = styled.div`
   display: grid;
@@ -33,22 +32,22 @@ const CardWrapper = styled.div`
     }
   }
 `;
-const searchComponentSkeleton = ({ data }) => {
+
+const SkeletonCards = () => {
+  // Create an array with 15 elements to represent the 15 cards
+  const skeletonCards = new Array(15).fill(null);
+
   return (
-    <>
-      <SkeletonTheme baseColor="#101010" highlightColor="#222" count={4}>
-        <Card>
-          {data?.map((movies) => {
-            return (
-              <CardWrapper>
-                <Skeleton height={300} width={200} {...movies} />
-              </CardWrapper>
-            );
-          })}
-        </Card>
-      </SkeletonTheme>
-    </>
+    <SkeletonTheme baseColor="#202020" highlightColor="#444">
+      <Card>
+        {skeletonCards.map((_, index) => (
+          <CardWrapper key={index}>
+            <Skeleton height={300} width={200} />
+          </CardWrapper>
+        ))}
+      </Card>
+    </SkeletonTheme>
   );
 };
 
-export default searchComponentSkeleton;
+export default SkeletonCards;

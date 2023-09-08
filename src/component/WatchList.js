@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import db, { auth } from "../FireBase/Firebase";
 import MovieCard from "./MoiveCard";
 import { styled } from "styled-components";
+import SearchComponentSkeleton from "./skeletons/searchComponentSkeleton";
 
 const Container = styled.div`
   position: relative;
@@ -55,16 +56,20 @@ const WatchList = () => {
   console.log("auth check", auth?.currentUser?.uid);
   return (
     <Container>
-      <Card>
-        {watchList.map(
-          (movies) => {
-            // console.log(movies?.data()?.uid);
-            return <MovieCard key={movies.id} movies={movies.data()} />;
-          }
+      {watchList.length ? (
+        <Card>
+          {watchList.map(
+            (movies) => {
+              // console.log(movies?.data()?.uid);
+              return <MovieCard key={movies.id} movies={movies.data()} />;
+            }
 
-          // console.log(movie.data())
-        )}
-      </Card>
+            // console.log(movie.data())
+          )}
+        </Card>
+      ) : (
+        <SearchComponentSkeleton />
+      )}
     </Container>
   );
 };

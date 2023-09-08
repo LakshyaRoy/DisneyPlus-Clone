@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
+import RecommendsSkeleton from "./skeletons/recommendsSkeleton";
 
 const Container = styled.div`
   padding: 0 0 26px;
@@ -54,15 +55,21 @@ const Originals = ({ data }) => {
     <Container>
       <h4>Disney Originals</h4>
       <Content>
-        {data.map((movies, id) => {
-          return (
-            <Wrap key={id}>
-              <Link to={`/detail/${movies.title.replaceAll(" ", "-")}`}>
-                <img src={movies.cardImg} alt={movies.title} />
-              </Link>
-            </Wrap>
-          );
-        })}
+        {data.length === 0 || !data ? (
+          // Display the skeleton when data is empty or undefined
+          <RecommendsSkeleton />
+        ) : (
+          // Render the actual movie cards when data is available
+          data.map((movies, id) => {
+            return (
+              <Wrap key={id}>
+                <Link to={`/detail/${movies.title.replaceAll(" ", "-")}`}>
+                  <img src={movies.cardImg} alt={movies.title} />
+                </Link>
+              </Wrap>
+            );
+          })
+        )}
       </Content>
     </Container>
   );

@@ -372,9 +372,7 @@ const Details = () => {
     messageApi.open({
       type: "success",
       content: "Add to WatchList ",
-    });
-    message.config({
-      duration: 3,
+      duration: 2,
       maxCount: 3,
     });
   };
