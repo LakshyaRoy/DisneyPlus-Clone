@@ -11,7 +11,8 @@ import { auth } from "../FireBase/Firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
+import { message } from "antd";
+import Skeleton from "react-loading-skeleton";
 import {
   setSignOutState,
   setUserLoginDetails,
@@ -194,7 +195,7 @@ const Header = () => {
       }
     });
   }, [userData?.name]);
-
+  const [messageApi, contextHolder] = message.useMessage();
   const handleLogin = async () => {
     if (!userData?.name) {
       try {
@@ -207,6 +208,12 @@ const Header = () => {
             photoUrl: loginData.photoURL,
           })
         );
+        messageApi.open({
+          type: "success",
+          content: "Login Successfully",
+          duration: 2,
+          maxCount: 3,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -216,6 +223,12 @@ const Header = () => {
         auth.signOut();
         history("/");
         localStorage.removeItem("localId");
+        messageApi.open({
+          type: "success",
+          content: "Logout Successfully",
+          duration: 2,
+          maxCount: 3,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -236,6 +249,7 @@ const Header = () => {
 
   return (
     <Nav>
+      {contextHolder}
       {!userData?.name ? (
         <Link to="/">
           <Logo>
@@ -281,9 +295,17 @@ const Header = () => {
             </Link>
           </NavMenu>
           <SignOut>
-            <UserImg src={`${userData?.photoUrl}`} alt={userData?.name} />
+            {!userData ? (
+              <Skeleton circle={true} height={48} width={48} />
+            ) : (
+              <UserImg src={`${userData?.photoUrl}`} alt={userData?.name} />
+            )}
             <DropDown>
-              <span onClick={handleLogin}>Sign Out</span>
+              {!userData ? (
+                <Skeleton width={70} height={20} />
+              ) : (
+                <span onClick={handleLogin}>Sign Out</span>
+              )}
             </DropDown>
           </SignOut>
         </>

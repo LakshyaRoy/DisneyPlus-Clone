@@ -4,6 +4,7 @@ import BgImage from "../images/images/login-background.jpg";
 import ctaLogoOne from "../images/images/cta-logo-one.svg";
 import ctaLogoTwo from "../images/images/cta-logo-two.png";
 import Header from "./header";
+import { message } from "antd";
 
 const BgImages = styled.div`
   background-image: url(${BgImage});
@@ -95,13 +96,23 @@ const Description = styled.p`
 `;
 
 const Login = () => {
+  const [messageApi, contextHolder] = message.useMessage();
+  const success = () => {
+    messageApi.info({
+      type: "primary",
+      content: "Please Login to Continue",
+      duration: 2,
+      maxCount: 3,
+    });
+  };
   return (
     <div>
+      {contextHolder}
       <Container>
         <Content>
           <CTA>
             <CTALogoOne src={ctaLogoOne} />
-            <SignUp>Get All There</SignUp>
+            <SignUp onClick={success}>Get All There</SignUp>
             <Description>
               Get Premier Access to Raya and the Last Dragon for an additional
               fee with a Disney+ subscription. As of 03/26/21, the price of
