@@ -12,7 +12,7 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
-import Skeleton from "react-loading-skeleton";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import {
   setSignOutState,
   setUserLoginDetails,
@@ -57,7 +57,7 @@ const NavMenu = styled.div`
   padding: 0px;
   position: relative;
   margin-right: auto;
-  margin-left: 25px;
+  margin-left: 15px;
 
   a {
     display: flex;
@@ -107,9 +107,9 @@ const NavMenu = styled.div`
     }
   }
 
-  /* @media (max-width: 768px) {
+  @media (max-width: 590px) {
     display: none;
-  } */
+  }
 `;
 
 const Login = styled.a`
@@ -146,6 +146,16 @@ const DropDown = styled.div`
   letter-spacing: 3px;
   width: 95px;
   opacity: 0;
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    gap: 10px;
+  }
 `;
 
 const SignOut = styled.div`
@@ -281,6 +291,10 @@ const Header = () => {
               <img src={WatchList} alt="WatchList" />
               <span>WatchList</span>
             </Link>
+            <Link to="/series">
+              <img src={Series} alt="Series" />
+              <span>Series</span>
+            </Link>
             {/* <Link to="/originals">
               <img src={Originals} alt="Originals" />
               <span>Originals</span>
@@ -289,23 +303,39 @@ const Header = () => {
               <img src={Movies} alt="Movies" />
               <span>Movies</span>
             </Link> */}
-            <Link to="/series">
-              <img src={Series} alt="Series" />
-              <span>Series</span>
-            </Link>
           </NavMenu>
           <SignOut>
             {!userData ? (
-              <Skeleton circle={true} height={48} width={48} />
+              <SkeletonTheme baseColor="#343a40" highlightColor="#3">
+                <Skeleton circle={true} height={48} width={48} />
+              </SkeletonTheme>
             ) : (
               <UserImg src={`${userData?.photoUrl}`} alt={userData?.name} />
             )}
             <DropDown>
-              {!userData ? (
-                <Skeleton width={70} height={20} />
-              ) : (
-                <span onClick={handleLogin}>Sign Out</span>
-              )}
+              <ul>
+                <li>
+                  <Link to="/home">
+                    <span>Home</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/search">
+                    <span>Search</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/watchlist">
+                    <span>WatchList</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/series">
+                    <span>Series</span>
+                  </Link>
+                </li>
+                <li onClick={handleLogin}>Sign Out</li>
+              </ul>
             </DropDown>
           </SignOut>
         </>

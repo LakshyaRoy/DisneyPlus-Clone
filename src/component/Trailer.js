@@ -24,6 +24,55 @@ const ContainerWrapper = styled.div`
     display: none;
   }
 `;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  overflow: scroll;
+  width: 50%;
+  background-color: rgba(15, 16, 20, 0.8);
+  margin-top: 20px;
+  border-radius: 5px;
+
+  @media screen and (max-width: 1020px) {
+    width: 85%;
+
+    iframe {
+      height: 281.25px;
+      width: 500px;
+    }
+  }
+
+  @media screen and (max-width: 625px) {
+    width: 80%;
+    iframe {
+      width: 400px;
+      height: 225px;
+    }
+  }
+
+  @media screen and (max-width: 490px) {
+    iframe {
+      width: 368px;
+      height: 207px;
+    }
+  }
+  @media screen and (max-width: 420px) {
+    width: 70%;
+    iframe {
+      width: 288px;
+      height: 162px;
+    }
+  }
+  @media screen and (max-width: 360px) {
+    iframe {
+      width: 240px;
+      height: 135px;
+    }
+  }
+`;
 // const Container = styled.div`
 //   background-color: rgba(15, 16, 20, 0.8);
 //   border-radius: 10px;
@@ -94,6 +143,10 @@ const Cards = styled.div`
     &:hover {
       transform: scale(1.1);
     }
+    @media screen and (max-width: 340px) {
+      height: 243px;
+      width: 190px;
+    }
   }
 `;
 const Trailers = ({ videoData, setIsTrailer, isTrailer, tvShowTrailer }) => {
@@ -141,20 +194,7 @@ const Trailers = ({ videoData, setIsTrailer, isTrailer, tvShowTrailer }) => {
     >
       {/* <Container> */}
       {/* <Content> */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          // justifyContent: "center",
-          height: "100%",
-          overflow: "scroll",
-          width: "50%",
-          backgroundColor: "rgba(15, 16, 20, 0.8)",
-          marginTop: "20px",
-          borderRadius: "5px",
-        }}
-      >
+      <Content>
         <Close
           onClick={() => {
             setIsTrailer(false);
@@ -247,7 +287,7 @@ const Trailers = ({ videoData, setIsTrailer, isTrailer, tvShowTrailer }) => {
         {/* </LinkWrapper> */}
         {/* </Content> */}
         {/* </Container> */}
-      </div>
+      </Content>
     </ContainerWrapper>
   );
 };

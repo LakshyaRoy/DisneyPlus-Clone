@@ -197,6 +197,12 @@ const Description = styled.div`
   @media screen and (max-width: 768px) {
     font-size: 14px;
   }
+  @media screen and (max-width: 625px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 435px) {
+    font-size: 16px;
+  }
 `;
 
 const PosterImage = styled.div`
