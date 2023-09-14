@@ -506,7 +506,7 @@ const Details = () => {
                     <span></span>
                   </AddList>
                   <GroupWatch>
-                    <div title="Share">
+                    <div title="Share" onClick={handleToShare}>
                       <img src={GroupIcon} alt="" />
                     </div>
                   </GroupWatch>

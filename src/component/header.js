@@ -5,8 +5,6 @@ import Home from "../images/images/home-icon.svg";
 import WatchList from "../images/images/watchlist-icon.svg";
 import Series from "../images/images/series-icon.svg";
 import Search from "../images/images/search-icon.svg";
-import Originals from "../images/images/original-icon.svg";
-import Movies from "../images/images/movie-icon.svg";
 import { auth } from "../FireBase/Firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
@@ -155,6 +153,19 @@ const DropDown = styled.div`
     padding: 0;
     justify-content: center;
     gap: 10px;
+  }
+  li {
+    display: none;
+  }
+
+  li:last-child {
+    display: block;
+  }
+
+  @media screen and (max-width: 590px) {
+    li {
+      display: block;
+    }
   }
 `;
 
@@ -312,6 +323,7 @@ const Header = () => {
             ) : (
               <UserImg src={`${userData?.photoUrl}`} alt={userData?.name} />
             )}
+
             <DropDown>
               <ul>
                 <li>
