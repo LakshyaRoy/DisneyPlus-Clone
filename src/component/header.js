@@ -238,21 +238,23 @@ const Header = () => {
       } catch (error) {
         console.log(error);
       }
-    } else {
-      try {
-        dispatch(setSignOutState());
-        auth.signOut();
-        history("/");
-        localStorage.removeItem("localId");
-        messageApi.open({
-          type: "success",
-          content: "Logout Successfully",
-          duration: 2,
-          maxCount: 3,
-        });
-      } catch (error) {
-        console.log(error);
-      }
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      dispatch(setSignOutState());
+      await auth.signOut();
+      history("/");
+      localStorage.removeItem("localId");
+      messageApi.open({
+        type: "success",
+        content: "Logout Successfully",
+        duration: 2,
+        maxCount: 3,
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -346,7 +348,7 @@ const Header = () => {
                     <span>Series</span>
                   </Link>
                 </li>
-                <li onClick={handleLogin}>Sign Out</li>
+                <li onClick={handleLogout}>Sign Out</li>
               </ul>
             </DropDown>
           </SignOut>
