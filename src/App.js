@@ -44,11 +44,38 @@ function App() {
 
         <Route path="/detail/:id/:type?" element={<Details />} />
 
-        <Route path="/search" element={<Search />} />
+        <Route
+          path="/search"
+          element={
+            userData?.name !== undefined ? (
+              <Search />
+            ) : (
+              <Navigate replace to={"/"} />
+            )
+          }
+        />
 
-        <Route path="/watchlist" element={<WatchList />} />
+        <Route
+          path="/watchlist"
+          element={
+            userData?.name !== undefined ? (
+              <WatchList />
+            ) : (
+              <Navigate replace to={"/"} />
+            )
+          }
+        />
 
-        <Route path="/series" element={<Series />} />
+        <Route
+          path="/series"
+          element={
+            userData?.name !== undefined ? (
+              <Series />
+            ) : (
+              <Navigate replace to={"/"} />
+            )
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
