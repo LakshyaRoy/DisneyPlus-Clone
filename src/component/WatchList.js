@@ -74,7 +74,13 @@ const WatchList = () => {
           )}
         </Card>
       ) : (
-        <SearchComponentSkeleton />
+        <p>
+          <h4>No data found for Watch-list for this User!</h4>
+          <br />
+          <h5>Please add some movies to your watch-list!</h5>
+          <br />
+          <SearchComponentSkeleton />
+        </p>
       )}
     </Container>
   );
